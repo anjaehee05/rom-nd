@@ -144,7 +144,7 @@ function Stars({ size = 20 }: { size?: number }) {
 }
 
 // Static Data
-const NAV_LINKS = ["Shop", "New Arrivals", "Best Sellers", "About Us"];
+const NAV_LINKS = ["Main", "Best Sellers", "Review", "With Us"];
 const FOOTER_LINKS = [
   "Privacy Policy",
   "Terms of Service",
@@ -685,57 +685,10 @@ export default function RomAndLanding() {
           .problem-copy br { display: none; }
           .features-section { padding: 48px 0 72px !important; }
           .features-container { padding: 0 20px !important; }
-          .features-grid { display: flex !important; flex-direction: column; gap: 52px !important; }
-          .features-spacer { display: none !important; }
-          .product-reveal {
-            width: 100% !important;
-            top: auto !important;
-            margin: 0 !important;
-            justify-self: auto !important;
-            transform: none !important;
-            transition: opacity .7s ease-out !important;
+          .features-grid {
+            width: 1152px;
+            zoom: calc((100vw - 40px) / 1152px);
           }
-          .product-reveal > div { transform: none !important; top: auto !important; margin: 0 !important; }
-          .product-image-frame, .product-square {
-            width: 100% !important;
-            height: auto !important;
-            aspect-ratio: 1 / 1;
-            border-radius: 18px !important;
-          }
-          .product-square > img { width: 100% !important; height: 100% !important; object-fit: contain !important; }
-          .product-one-layout { display: flex; flex-direction: column; gap: 52px; }
-          .product-one-floating { position: relative !important; inset: auto !important; order: 1; width: 100% !important; height: auto !important; aspect-ratio: 1 / 1; }
-          .product-one-model { order: 2; }
-          .product-one-caption {
-            position: static !important;
-            margin-top: 12px;
-          }
-          .product-caption { width: 100% !important; margin-top: 16px !important; }
-          .product-caption h3, .product-caption div { max-width: 100%; }
-          .section3-scroll-image {
-            transform: translateY(14px) scale(.995);
-            transition:
-              opacity .7s ease-out .08s,
-              transform .7s cubic-bezier(.22, 1, .36, 1) .08s;
-          }
-          .reveal-visible .section3-scroll-image { transform: translateY(0) scale(1); }
-          .product-hover:hover { transform: none; box-shadow: 0 20px 50px rgba(253,197,213,0.15); }
-          .image-shalala::before { inset: -8%; filter: blur(18px); }
-          .image-shalala::after { inset: -5%; }
-          .reveal-visible .image-shalala::before { animation-duration: 1.2s; opacity: .45; }
-          .reveal-visible .image-shalala::after { animation-duration: 1.2s; opacity: .55; }
-          .scroll-labels {
-            left: 10px !important;
-            bottom: 12px !important;
-            max-width: calc(100% - 20px);
-            font-size: 17px !important;
-            white-space: normal !important;
-            transform: translateY(12px);
-            transition:
-              opacity .65s ease-out .55s,
-              transform .65s cubic-bezier(.22, 1, .36, 1) .55s;
-          }
-          .scroll-labels span { padding: 6px 10px !important; }
           .section3-trail { display: none; }
           .reviews-section { padding: 56px 0 72px !important; }
           .reviews-container { padding: 0 20px !important; }
@@ -846,10 +799,34 @@ export default function RomAndLanding() {
             style={{ display: "flex", gap: 32, alignItems: "center" }}
             className="desktop-nav"
           >
-            {NAV_LINKS.map((item) => (
+            {NAV_LINKS.map((item, index) => (
               <a
                 key={item}
-                href="#"
+                href={
+                  index === 1
+                    ? "#third-section"
+                    : index === 2
+                      ? "#fourth-section"
+                      : index === 3
+                        ? "#fifth-section"
+                        : "#"
+                }
+                onClick={
+                  index === 1 || index === 2 || index === 3
+                    ? (event) => {
+                        event.preventDefault();
+                        document
+                          .getElementById(
+                            index === 1
+                              ? "third-section"
+                              : index === 2
+                                ? "fourth-section"
+                                : "fifth-section",
+                          )
+                          ?.scrollIntoView({ behavior: "smooth" });
+                      }
+                    : undefined
+                }
                 style={{
                   fontSize: 14,
                   fontWeight: 600,
@@ -1131,6 +1108,7 @@ export default function RomAndLanding() {
 
         {/* Features Grid */}
         <section
+          id="third-section"
           className="features-section"
           ref={section3Ref}
           onPointerMove={addSection3TrailPoint}
@@ -1140,6 +1118,7 @@ export default function RomAndLanding() {
             background: "#fff",
             overflow: "hidden",
             position: "relative",
+            scrollMarginTop: 80,
           }}
         >
           <canvas
@@ -1376,9 +1355,9 @@ export default function RomAndLanding() {
                       alt="Romand product"
                       className="section3-scroll-image"
                       style={{
-                        width: 500,
-                        height: 500,
-                        overflow: "hidden",
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
                         borderRadius: 16,
                       }}
                     />
@@ -1549,8 +1528,13 @@ export default function RomAndLanding() {
 
         {/* Reviews */}
         <section
+          id="fourth-section"
           className="reviews-section"
-          style={{ padding: "64px 0 160px", background: "#FFF5F7" }}
+          style={{
+            padding: "64px 0 160px",
+            background: "#FFF5F7",
+            scrollMarginTop: 80,
+          }}
         >
           <div
             className="reviews-container"
@@ -1651,8 +1635,13 @@ export default function RomAndLanding() {
 
       {/* Social Gallery */}
       <section
+        id="fifth-section"
         className="social-section"
-        style={{ padding: "120px 0 64px", background: "#fff" }}
+        style={{
+          padding: "120px 0 64px",
+          background: "#fff",
+          scrollMarginTop: 80,
+        }}
       >
         <div
           className="social-container"
