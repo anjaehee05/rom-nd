@@ -2,6 +2,7 @@
 import bg1 from "../img/bg1.png";
 import bg2 from "../img/bg2.png";
 import bg3 from "../img/bg3.png";
+import bg4 from "../img/bg4.mp4";
 import img1 from "../img/img1.png";
 import img2 from "../img/img2.png";
 import img3 from "../img/img3.png";
@@ -16,24 +17,49 @@ import slide4 from "../img/slide4.png";
 import slide5 from "../img/slide5.png";
 import slide6 from "../img/slide6.png";
 import slide7 from "../img/slide7.png";
+import review1 from "../img/review1.png";
+import review2 from "../img/review2.png";
+import review3 from "../img/review3.png";
 const HERO_SLIDES = [
   {
     image: bg1,
     title1: "# 하트 멜팅밤",
     title2: "# 소프트 핑크",
     desc: "누구에게나 어울리는 소프트 핑크로 하루를 촉촉하게!",
+    productName: "글래스팅 멜팅 밤",
+    productDetail:
+      "입술 온도에 부드럽게 녹아 맑고 촉촉한 컬러를 더해주는 데일리 멜팅 밤입니다.",
+    price: "13,000원",
   },
   {
     image: bg2,
     title1: "# 사탕처럼 달콤하게",
     title2: "# 하트치크",
     desc: "세가지 컬러의 하트로 생기있는 볼을 완성해보세요.",
+    productName: "베러 댄 치크",
+    productDetail:
+      "세 가지 하트 컬러가 자연스럽게 어우러져 생기 있는 볼을 완성하는 블러셔입니다.",
+    price: "12,000원",
   },
   {
     image: bg3,
     title1: "# 오래가는 발색",
     title2: "# 선명한 하루",
     desc: "처음 바른 그대로 맑고 선명하게 유지됩니다.",
+    productName: "쥬시 플래시 립 오일",
+    productDetail:
+      "맑고 선명한 컬러와 촉촉한 광택이 오랫동안 유지되는 워터 틴트입니다.",
+    price: "14,000원",
+  },
+  {
+    video: bg4,
+    title1: "# 매끈한 피부결",
+    title2: "# 투명한 광채",
+    desc: "가볍게 밀착되어 자연스럽고 깨끗한 피부 표현을 완성해보세요.",
+    productName: "누드바이롬앤 멜로우 매트 쿠션",
+    productDetail:
+      "피부에 얇고 고르게 밀착되어 매끈한 피부결과 자연스러운 광채를 연출하는 쿠션입니다.",
+    price: "18,000원",
   },
 ];
 
@@ -48,6 +74,10 @@ interface RevealProps {
 }
 
 interface ReviewData {
+  productName: string;
+  productDetail: string;
+  productPrice: string;
+  productImage: string;
   quote: string;
   body: string;
   author: string;
@@ -146,11 +176,61 @@ function Stars({ size = 20 }: { size?: number }) {
 // Static Data
 const NAV_LINKS = ["Main", "Best Sellers", "Review", "With Us"];
 const FOOTER_LINKS = [
-  "Privacy Policy",
-  "Terms of Service",
-  "Shipping & Returns",
-  "Contact Us",
-  "Store Locator",
+  {
+    label: "Privacy Policy",
+    title: "개인정보 처리방침",
+    intro:
+      "rom&nd는 고객님의 개인정보를 안전하게 보호하며, 서비스 제공에 필요한 범위에서만 정보를 이용합니다.",
+    details: [
+      "수집 항목: 이름, 연락처, 이메일, 배송지 및 주문 정보",
+      "이용 목적: 주문 처리, 배송, 고객 상담 및 서비스 개선",
+      "보유 기간: 관련 법령에서 정한 기간 후 안전하게 파기",
+    ],
+  },
+  {
+    label: "Terms of Service",
+    title: "이용약관",
+    intro:
+      "rom&nd 온라인 스토어 이용 시 적용되는 기본 권리와 의무를 안내합니다.",
+    details: [
+      "주문은 결제 완료 후 확정되며 재고 상황에 따라 취소될 수 있습니다.",
+      "상품 정보와 가격은 사전 안내 후 변경될 수 있습니다.",
+      "회원은 정확한 정보를 제공하고 계정을 안전하게 관리해야 합니다.",
+    ],
+  },
+  {
+    label: "Shipping & Returns",
+    title: "배송 및 반품 안내",
+    intro:
+      "결제 완료 후 빠르고 안전하게 상품을 준비하며, 미개봉 상품은 기준에 따라 반품할 수 있습니다.",
+    details: [
+      "배송 기간: 영업일 기준 2~5일",
+      "무료 배송: 최종 결제 금액 30,000원 이상",
+      "반품 신청: 수령일로부터 7일 이내 고객센터 접수",
+    ],
+  },
+  {
+    label: "Contact Us",
+    title: "고객문의",
+    intro:
+      "제품, 주문, 배송에 대한 궁금한 점을 rom&nd 고객센터에서 도와드립니다.",
+    details: [
+      "이메일: help@romand.co.kr",
+      "전화: 02-0000-0000",
+      "운영 시간: 평일 10:00~17:00 (점심 12:00~13:00)",
+    ],
+  },
+  {
+    label: "Store Locator",
+    title: "매장 안내",
+    intro:
+      "가까운 rom&nd 오프라인 매장에서 제품의 컬러와 텍스처를 직접 만나보세요.",
+    details: [
+      "서울 플래그십 스토어: 서울 성동구 성수동",
+      "주요 입점처: 올리브영, 롭스 및 주요 면세점",
+      "매장별 재고와 운영 시간은 방문 전 확인해 주세요.",
+    ],
+  },
 ];
 const LOGO = new URL("../img/logo.png", import.meta.url).href;
 
@@ -186,18 +266,33 @@ const HEADER_ICONS = [
 
 const REVIEWS: ReviewData[] = [
   {
+    productName: "롬앤 쥬시 알 치크",
+    productDetail:
+      "맑고 투명한 수채화 발색으로 볼에 자연스러운 생기를 더해주는 치크입니다.",
+    productPrice: "14,000원",
+    productImage: review1,
     quote: '"반신반의하며 구매했는데 지속력이 정말 좋아요"',
     body: "기존 제품은 금방 지워져서 아쉬웠는데, rom&nd로 바꾸고 나서는 하루 종일 맑은 색감이 유지돼요. 주변 지인들에게도 추천하고 있어요.",
     author: "구매자 김**",
     delay: 100,
   },
   {
+    productName: "글래스팅 멜팅 밤",
+    productDetail:
+      "입술 온도에 부드럽게 녹아 맑은 컬러와 촉촉한 광택을 더해주는 멜팅 밤입니다.",
+    productPrice: "13,000원",
+    productImage: review2,
     quote: '"데일리로 쓰기 좋은 최고의 선택"',
     body: "배송도 빠르고 무엇보다 컬러가 자연스럽고 예뻐요. 부담 없이 매일 바르기 좋아서 손이 자주 가요.",
     author: "구매자 이**",
     delay: 200,
   },
   {
+    productName: "더 쥬시 래스팅 틴트",
+    productDetail:
+      "선명한 과즙 컬러와 탱글한 광택이 오랫동안 유지되는 데일리 틴트입니다.",
+    productPrice: "13,000원",
+    productImage: review3,
     quote: '"전문가들이 추천하는 이유를 알겠어요"',
     body: "촉촉한 마감과 선명한 발색이 오래 이어져요. 여러 제품을 써봤지만 이만큼 만족스러운 제품은 드물어요.",
     author: "구매자 박**",
@@ -242,7 +337,7 @@ const SOCIAL_IMGS = [slide1, slide2, slide3, slide4, slide5, slide6, slide7];
 const LOOPED_SOCIAL_IMGS = [...SOCIAL_IMGS, ...SOCIAL_IMGS, ...SOCIAL_IMGS];
 
 const C = {
-  primary: "#6c0c20",
+  primary: "#FA96AC",
   pink: "#FDC5D5",
   pinkLight: "rgba(253,197,213,0.45)",
   surface: "#000000",
@@ -269,6 +364,15 @@ export default function RomAndLanding() {
   const [scrolled, setScrolled] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [fade, setFade] = useState(true);
+  const [selectedProductIndex, setSelectedProductIndex] = useState<
+    number | null
+  >(null);
+  const [selectedReviewIndex, setSelectedReviewIndex] = useState<number | null>(
+    null,
+  );
+  const [selectedFooterIndex, setSelectedFooterIndex] = useState<number | null>(
+    null,
+  );
   const [img2Hovered, setImg2Hovered] = useState(false);
   const [pairedProductsVisible, setPairedProductsVisible] = useState(false);
   const [thirdRowVisible, setThirdRowVisible] = useState(false);
@@ -279,6 +383,17 @@ export default function RomAndLanding() {
   const section3TrailPoints = useRef<TrailPoint[]>([]);
   const section3Sparkles = useRef<TrailSparkle[]>([]);
   const lastSparkleTime = useRef(0);
+
+  const moveHeroSlide = (
+    getNextSlide: (current: number) => number,
+  ) => {
+    setFade(false);
+
+    window.setTimeout(() => {
+      setCurrentSlide((current) => getNextSlide(current));
+      setFade(true);
+    }, 500);
+  };
 
   const addSection3TrailPoint = (event: React.PointerEvent<HTMLElement>) => {
     const section = section3Ref.current;
@@ -362,18 +477,40 @@ export default function RomAndLanding() {
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
   useEffect(() => {
-    const timer = setInterval(() => {
-      setFade(false);
+    if (
+      selectedProductIndex === null &&
+      selectedReviewIndex === null &&
+      selectedFooterIndex === null
+    )
+      return;
 
-      setTimeout(() => {
-        setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
-        setFade(true);
-      }, 500);
-    }, 5000);
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setSelectedProductIndex(null);
+        setSelectedReviewIndex(null);
+        setSelectedFooterIndex(null);
+      }
+    };
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", closeOnEscape);
 
-    return () => clearInterval(timer);
-  }, []);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [selectedProductIndex, selectedReviewIndex, selectedFooterIndex]);
+  useEffect(() => {
+    if (HERO_SLIDES[currentSlide].video) return;
+
+    const timer = window.setTimeout(() => {
+      moveHeroSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+    }, 3000);
+
+    return () => window.clearTimeout(timer);
+  }, [currentSlide]);
 
   useEffect(() => {
     const gallery = socialGalleryRef.current;
@@ -505,6 +642,30 @@ export default function RomAndLanding() {
     };
   }, []);
 
+  const activeProduct =
+    selectedReviewIndex !== null
+      ? {
+          name: REVIEWS[selectedReviewIndex].productName,
+          detail: REVIEWS[selectedReviewIndex].productDetail,
+          price: REVIEWS[selectedReviewIndex].productPrice,
+          image: REVIEWS[selectedReviewIndex].productImage,
+        }
+      : selectedProductIndex !== null
+        ? {
+            name: HERO_SLIDES[selectedProductIndex].productName,
+            detail: HERO_SLIDES[selectedProductIndex].productDetail,
+            price: HERO_SLIDES[selectedProductIndex].price,
+            image: undefined,
+          }
+        : null;
+
+  const closeProductModal = () => {
+    setSelectedProductIndex(null);
+    setSelectedReviewIndex(null);
+  };
+
+  const closeFooterModal = () => setSelectedFooterIndex(null);
+
   return (
     <div
       className="romand-landing"
@@ -534,8 +695,28 @@ export default function RomAndLanding() {
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
         .product-hover { transition: transform 0.5s ease, box-shadow 0.5s ease; }
         .product-hover:hover { transform: translateY(-8px); box-shadow: 0 30px 60px rgba(253,197,213,0.25); }
-        .product-image-frame { width: 500px; height: 500px; display: flex; align-items: center; justify-content: center; }
-        .product-image-frame img { width: 100%; height: 100%; object-fit: contain; display: block; }
+        .section3-image-frame,
+        .product-image-frame {
+          width: 500px;
+          height: 500px;
+          max-width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow: visible;
+          position: relative;
+        }
+        .section3-image-frame img,
+        .product-image-frame img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+        }
+        .section3-image-frame.section3-contain img,
+        .product-image-frame.section3-contain img {
+          object-fit: contain;
+        }
         .section3-scroll-image {
           opacity: 0;
           transform: translateY(48px) scale(0.98);
@@ -609,7 +790,7 @@ export default function RomAndLanding() {
         }
         @media (max-width: 900px) {
           .site-header { height: 64px !important; }
-          .header-inner { padding: 0 12px !important; }
+          .header-inner { padding: 0 32px !important; }
           .header-logo { transform: none !important; }
           .header-logo img { height: 32px !important; }
           .desktop-nav { display: none !important; }
@@ -618,6 +799,7 @@ export default function RomAndLanding() {
           .page-main { padding-top: 64px !important; }
           .hero-section { min-height: calc(100svh - 64px) !important; align-items: center !important; }
           .hero-background { background-position: 62% center !important; }
+          .hero-video { object-position: 62% center !important; }
           .hero-content {
             padding: 20px 20px 88px !important;
             transform: translateY(-8vh);
@@ -752,6 +934,12 @@ export default function RomAndLanding() {
           .footer-links a:nth-child(odd) { border-right: 1px solid rgba(108,12,32,.12); }
           .footer-links a:last-child:nth-child(odd) { grid-column: 1 / -1; border-right: none; }
         }
+        @media (max-width: 600px) {
+          .header-inner { padding: 0 16px !important; }
+          .product-modal { width: calc(100% - 32px) !important; padding: 28px 22px !important; }
+          .product-modal h2 { font-size: 26px !important; }
+          .product-modal img { height: 180px !important; }
+        }
         ::selection { background: rgba(253,197,213,0.3); }
       `}</style>
 
@@ -779,16 +967,12 @@ export default function RomAndLanding() {
             justifyContent: "space-between",
             alignItems: "center",
             width: "100%",
-            maxWidth: 1200,
+            maxWidth: 1280,
             margin: "0 auto",
-            padding: "0 24px",
+            padding: "0 40px",
           }}
         >
-          <a
-            className="header-logo"
-            href="#"
-            style={{ transform: "translateX(-24px)" }}
-          >
+          <a className="header-logo" href="#">
             <img
               src={LOGO}
               alt="rom&nd logo"
@@ -894,6 +1078,225 @@ export default function RomAndLanding() {
         </div>
       </header>
 
+      {activeProduct !== null && (
+        <div
+          role="presentation"
+          onClick={closeProductModal}
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 100,
+            display: "grid",
+            placeItems: "center",
+            padding: 24,
+            background: "rgba(48, 19, 10, 0.38)",
+            backdropFilter: "blur(8px)",
+          }}
+        >
+          <div
+            className="product-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="product-modal-title"
+            onClick={(event) => event.stopPropagation()}
+            style={{
+              position: "relative",
+              width: "min(520px, 100%)",
+              maxHeight: "calc(100vh - 48px)",
+              overflowY: "auto",
+              padding: "42px 40px",
+              borderRadius: 28,
+              background: "#fff9fb",
+              boxShadow: "0 24px 80px rgba(80, 25, 45, 0.3)",
+              textAlign: "left",
+            }}
+          >
+            <button
+              type="button"
+              aria-label="Close product popup"
+              onClick={closeProductModal}
+              style={{
+                position: "absolute",
+                top: 18,
+                right: 18,
+                width: 40,
+                height: 40,
+                border: "none",
+                borderRadius: "50%",
+                background: C.pinkLight,
+                color: C.primary,
+                fontSize: 24,
+                cursor: "pointer",
+              }}
+            >
+              ×
+            </button>
+            {activeProduct.image && (
+              <img
+                src={activeProduct.image}
+                alt={activeProduct.name}
+                style={{
+                  width: "100%",
+                  height: 220,
+                  marginBottom: 24,
+                  borderRadius: 18,
+                  objectFit: "contain",
+                  background: "#fff",
+                }}
+              />
+            )}
+            <p
+              style={{
+                margin: "0 0 10px",
+                color: C.primary,
+                fontSize: 14,
+                letterSpacing: "0.16em",
+              }}
+            >
+              rom&nd
+            </p>
+            <h2
+              id="product-modal-title"
+              style={{
+                margin: "0 48px 18px 0",
+                color: "#30130a",
+                fontSize: 32,
+                lineHeight: 1.3,
+              }}
+            >
+              {activeProduct.name}
+            </h2>
+            <p
+              style={{
+                margin: "0 0 28px",
+                color: C.muted,
+                fontSize: 17,
+                lineHeight: 1.75,
+              }}
+            >
+              {activeProduct.detail}
+            </p>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                paddingTop: 22,
+                borderTop: `1px solid ${C.border}`,
+              }}
+            >
+              <span style={{ color: C.muted, fontSize: 15 }}>판매가</span>
+              <strong style={{ color: C.primary, fontSize: 24 }}>
+                {activeProduct.price}
+              </strong>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {selectedFooterIndex !== null && (
+        <div
+          role="presentation"
+          onClick={closeFooterModal}
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 100,
+            display: "grid",
+            placeItems: "center",
+            padding: 24,
+            background: "rgba(48, 19, 10, 0.38)",
+            backdropFilter: "blur(8px)",
+          }}
+        >
+          <div
+            className="product-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="footer-modal-title"
+            onClick={(event) => event.stopPropagation()}
+            style={{
+              position: "relative",
+              width: "min(600px, 100%)",
+              maxHeight: "calc(100vh - 48px)",
+              overflowY: "auto",
+              padding: "42px 40px",
+              borderRadius: 28,
+              background: "#fff9fb",
+              boxShadow: "0 24px 80px rgba(80, 25, 45, 0.3)",
+              textAlign: "left",
+            }}
+          >
+            <button
+              type="button"
+              aria-label="Close information popup"
+              onClick={closeFooterModal}
+              style={{
+                position: "absolute",
+                top: 18,
+                right: 18,
+                width: 40,
+                height: 40,
+                border: "none",
+                borderRadius: "50%",
+                background: C.pinkLight,
+                color: C.primary,
+                fontSize: 24,
+                cursor: "pointer",
+              }}
+            >
+              ×
+            </button>
+            <p
+              style={{
+                margin: "0 0 10px",
+                color: C.primary,
+                fontSize: 14,
+                letterSpacing: "0.16em",
+              }}
+            >
+              rom&nd
+            </p>
+            <h2
+              id="footer-modal-title"
+              style={{
+                margin: "0 48px 18px 0",
+                color: "#30130a",
+                fontSize: 32,
+                lineHeight: 1.3,
+              }}
+            >
+              {FOOTER_LINKS[selectedFooterIndex].title}
+            </h2>
+            <p
+              style={{
+                margin: "0 0 26px",
+                color: C.muted,
+                fontSize: 17,
+                lineHeight: 1.75,
+              }}
+            >
+              {FOOTER_LINKS[selectedFooterIndex].intro}
+            </p>
+            <ul
+              style={{
+                margin: 0,
+                padding: "22px 22px 22px 42px",
+                borderRadius: 16,
+                background: "rgba(253,197,213,0.22)",
+                color: C.muted,
+                fontSize: 16,
+                lineHeight: 1.8,
+              }}
+            >
+              {FOOTER_LINKS[selectedFooterIndex].details.map((detail) => (
+                <li key={detail}>{detail}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
+
       <main className="page-main" style={{ paddingTop: 80 }}>
         {/* Hero */}
         <section
@@ -911,13 +1314,57 @@ export default function RomAndLanding() {
             style={{
               position: "absolute",
               inset: 0,
-              backgroundImage: `url(${HERO_SLIDES[currentSlide].image})`,
+              backgroundImage: HERO_SLIDES[currentSlide].image
+                ? `url(${HERO_SLIDES[currentSlide].image})`
+                : undefined,
               backgroundSize: "cover",
               backgroundPosition: "center 25%",
               transition: "opacity 0.8s ease",
               opacity: fade ? 1 : 0,
             }}
-          />
+          >
+            {HERO_SLIDES[currentSlide].video && (
+              <video
+                key={HERO_SLIDES[currentSlide].video}
+                className="hero-video"
+                src={HERO_SLIDES[currentSlide].video}
+                autoPlay
+                muted
+                playsInline
+                onPlay={(event) => {
+                  event.currentTarget.dataset.advanceStarted = "false";
+                }}
+                onTimeUpdate={(event) => {
+                  const video = event.currentTarget;
+                  if (
+                    video.dataset.advanceStarted === "true" ||
+                    !Number.isFinite(video.duration) ||
+                    video.duration - video.currentTime > 0.9
+                  )
+                    return;
+
+                  video.dataset.advanceStarted = "true";
+                  video.pause();
+                  moveHeroSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+                }}
+                onEnded={(event) => {
+                  const video = event.currentTarget;
+                  if (video.dataset.advanceStarted !== "true") {
+                    video.dataset.advanceStarted = "true";
+                    moveHeroSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+                  }
+                }}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  objectPosition: "center 25%",
+                  display: "block",
+                  transform: "scale(1.1)",
+                }}
+              />
+            )}
+          </div>
           <div
             className="hero-content"
             style={{
@@ -946,6 +1393,12 @@ export default function RomAndLanding() {
                 alignItems: "flex-start",
                 textAlign: "left",
                 transform: "translateX(-30px)",
+                visibility: HERO_SLIDES[currentSlide].video
+                  ? "hidden"
+                  : "visible",
+                pointerEvents: HERO_SLIDES[currentSlide].video
+                  ? "none"
+                  : "auto",
               }}
             >
               <h1
@@ -979,6 +1432,8 @@ export default function RomAndLanding() {
                 {HERO_SLIDES[currentSlide].desc}
               </p>
               <button
+                type="button"
+                onClick={() => setSelectedProductIndex(currentSlide)}
                 style={{
                   padding: "16px 40px",
                   borderRadius: 9999,
@@ -1020,12 +1475,14 @@ export default function RomAndLanding() {
                 aria-label={label}
                 onClick={() => {
                   if (side === "left") {
-                    setCurrentSlide(
+                    moveHeroSlide(
                       (prev) =>
                         (prev - 1 + HERO_SLIDES.length) % HERO_SLIDES.length,
                     );
                   } else {
-                    setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+                    moveHeroSlide(
+                      (prev) => (prev + 1) % HERO_SLIDES.length,
+                    );
                   }
                 }}
                 style={{
@@ -1176,7 +1633,7 @@ export default function RomAndLanding() {
                 className="product-reveal"
                 delay={100}
                 style={{
-                  gridColumn: "2 / span 6",
+                  gridColumn: "1 / span 6",
                   position: "relative",
                 }}
               >
@@ -1185,15 +1642,12 @@ export default function RomAndLanding() {
                   style={{ position: "relative" }}
                 >
                   <div
-                    className="image-shalala product-one-floating product-square"
+                    className="image-shalala product-one-floating product-square section3-image-frame section3-contain"
                     style={{
                       position: "absolute",
                       zIndex: 2,
-                      overflow: "visible",
                       borderRadius: 24,
                       boxShadow: "0 8px 32px rgba(0,0,0,0.12)",
-                      width: 440,
-                      height: 440,
                       top: 80,
                       left: "calc(100% + 60px)",
                     }}
@@ -1202,11 +1656,6 @@ export default function RomAndLanding() {
                       src={img1}
                       alt="Juicy Lasting Tint Mini"
                       className="section3-scroll-image"
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "contain",
-                      }}
                     />
                     <div
                       className="product-one-caption"
@@ -1228,8 +1677,6 @@ export default function RomAndLanding() {
                     onMouseEnter={() => setImg2Hovered(true)}
                     onMouseLeave={() => setImg2Hovered(false)}
                     style={{
-                      overflow: "visible",
-                      position: "relative",
                       zIndex: 1,
                       transform: "translateY(160px)",
                     }}
@@ -1295,16 +1742,14 @@ export default function RomAndLanding() {
                 style={{
                   gridColumn: "span 5",
                   position: "relative",
-                  top: 100,
+                  top: 180,
                 }}
               >
                 <div
-                  className="dewy-shadow product-hover product-image-frame image-shalala"
-                  style={{
-                    overflow: "visible",
-                    position: "relative",
-                    zIndex: 1,
-                  }}
+                    className="dewy-shadow product-hover product-image-frame image-shalala"
+                    style={{
+                      zIndex: 1,
+                    }}
                 >
                   <img
                     src={img3}
@@ -1339,27 +1784,21 @@ export default function RomAndLanding() {
                 visibleOverride={pairedProductsVisible}
                 style={{ gridColumn: "1 / span 4" }}
               >
-                <div style={{ transform: "translate(45px, -300px)" }}>
+                <div style={{ transform: "translate(0, -370px)" }}>
                   <div
-                    className="dewy-shadow product-hover image-shalala product-square"
+                    className="dewy-shadow product-hover image-shalala product-square section3-image-frame"
                     style={{
-                      width: "100%",
-                      aspectRatio: "1/1",
-                      overflow: "visible",
+                      width: 500,
+                      height: 500,
+                      maxWidth: "none",
                       borderRadius: 16,
-                      position: "relative",
                     }}
                   >
                     <img
                       src={img4}
                       alt="Romand product"
                       className="section3-scroll-image"
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                        borderRadius: 16,
-                      }}
+                      style={{ borderRadius: 16 }}
                     />
                     <div
                       className="scroll-labels"
@@ -1410,10 +1849,7 @@ export default function RomAndLanding() {
               >
                 <div style={{ marginTop: 140 }}>
                   <div
-                    className="dewy-shadow product-hover product-image-frame image-shalala"
-                    style={{
-                      overflow: "visible",
-                    }}
+                    className="dewy-shadow product-hover product-image-frame image-shalala section3-contain"
                   >
                     <img
                       src={img5}
@@ -1463,27 +1899,17 @@ export default function RomAndLanding() {
                 visibleOverride={thirdRowVisible}
                 style={{ gridColumn: "1 / span 7" }}
               >
-                <div style={{ transform: "translateY(-180px)" }}>
+                <div style={{ transform: "translateY(-330px)" }}>
                   <div
-                    className="dewy-shadow product-hover image-shalala product-square"
+                    className="dewy-shadow product-hover image-shalala product-square section3-image-frame"
                     style={{
-                      width: 500,
-                      height: 500,
-                      maxWidth: "100%",
-                      overflow: "visible",
                       borderRadius: 12,
-                      position: "relative",
                     }}
                   >
                     <img
                       src={img6}
                       alt="Romand glowing skin"
                       className="section3-scroll-image"
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                      }}
                     />
                     <div
                       className="scroll-labels"
@@ -1589,6 +2015,24 @@ export default function RomAndLanding() {
                   className="dewy-shadow review-card"
                 >
                   <Stars size={20} />
+                  <button
+                    type="button"
+                    onClick={() => setSelectedReviewIndex(i)}
+                    style={{
+                      alignSelf: "flex-start",
+                      marginBottom: 16,
+                      padding: "7px 12px",
+                      borderRadius: 9999,
+                      background: C.pinkLight,
+                      color: C.primary,
+                      fontSize: 14,
+                      fontFamily: C.sans,
+                      border: "none",
+                      cursor: "pointer",
+                    }}
+                  >
+                    구매 상품 · {r.productName}
+                  </button>
                   <h4
                     style={{
                       fontFamily: C.serif,
@@ -1779,10 +2223,14 @@ export default function RomAndLanding() {
             className="footer-links"
             style={{ display: "flex", flexWrap: "wrap", gap: "8px 32px" }}
           >
-            {FOOTER_LINKS.map((link) => (
+            {FOOTER_LINKS.map((link, index) => (
               <a
-                key={link}
+                key={link.label}
                 href="#"
+                onClick={(event) => {
+                  event.preventDefault();
+                  setSelectedFooterIndex(index);
+                }}
                 style={{
                   fontSize: 14,
                   fontWeight: 600,
@@ -1799,7 +2247,7 @@ export default function RomAndLanding() {
                   ((e.target as HTMLElement).style.color = C.muted)
                 }
               >
-                {link}
+                {link.label}
               </a>
             ))}
           </div>
