@@ -363,7 +363,6 @@ const productLabelStyle: React.CSSProperties = {
 export default function RomAndLanding() {
   const [scrolled, setScrolled] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [fade, setFade] = useState(true);
   const [selectedProductIndex, setSelectedProductIndex] = useState<
     number | null
   >(null);
@@ -384,15 +383,8 @@ export default function RomAndLanding() {
   const section3Sparkles = useRef<TrailSparkle[]>([]);
   const lastSparkleTime = useRef(0);
 
-  const moveHeroSlide = (
-    getNextSlide: (current: number) => number,
-  ) => {
-    setFade(false);
-
-    window.setTimeout(() => {
-      setCurrentSlide((current) => getNextSlide(current));
-      setFade(true);
-    }, 500);
+  const moveHeroSlide = (getNextSlide: (current: number) => number) => {
+    setCurrentSlide((current) => getNextSlide(current));
   };
 
   const addSection3TrailPoint = (event: React.PointerEvent<HTMLElement>) => {
@@ -691,6 +683,38 @@ export default function RomAndLanding() {
         .material-symbols-outlined { font-family: 'Material Symbols Outlined'; font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
         .dewy-shadow { box-shadow: 0 20px 50px rgba(253,197,213,0.15); }
         .glass-nav { backdrop-filter: blur(12px); background-color: rgba(255,255,255,0.82); }
+        .hero-background {
+          position: absolute;
+          inset: 0;
+          background-size: cover;
+          background-position: center 25%;
+          opacity: 0;
+          transform: scale(1.035);
+          transition:
+            opacity 1.25s cubic-bezier(.22, 1, .36, 1),
+            transform 1.45s cubic-bezier(.22, 1, .36, 1);
+          will-change: opacity, transform;
+        }
+        .hero-background.is-active {
+          opacity: 1;
+          transform: scale(1);
+          z-index: 2;
+        }
+        .hero-video {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center 25%;
+          display: block;
+          transform: scale(1.1);
+        }
+        .hero-copy {
+          animation: hero-copy-rise 0.95s cubic-bezier(.22, 1, .36, 1) both;
+        }
+        @keyframes hero-copy-rise {
+          from { opacity: 0; transform: translateX(-30px) translateY(18px); }
+          to { opacity: 1; transform: translateX(-30px) translateY(0); }
+        }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
         .product-hover { transition: transform 0.5s ease, box-shadow 0.5s ease; }
@@ -1309,62 +1333,58 @@ export default function RomAndLanding() {
             overflow: "hidden",
           }}
         >
-          <div
-            className="hero-background"
-            style={{
-              position: "absolute",
-              inset: 0,
-              backgroundImage: HERO_SLIDES[currentSlide].image
-                ? `url(${HERO_SLIDES[currentSlide].image})`
-                : undefined,
-              backgroundSize: "cover",
-              backgroundPosition: "center 25%",
-              transition: "opacity 0.8s ease",
-              opacity: fade ? 1 : 0,
-            }}
-          >
-            {HERO_SLIDES[currentSlide].video && (
-              <video
-                key={HERO_SLIDES[currentSlide].video}
-                className="hero-video"
-                src={HERO_SLIDES[currentSlide].video}
-                autoPlay
-                muted
-                playsInline
-                onPlay={(event) => {
-                  event.currentTarget.dataset.advanceStarted = "false";
-                }}
-                onTimeUpdate={(event) => {
-                  const video = event.currentTarget;
-                  if (
-                    video.dataset.advanceStarted === "true" ||
-                    !Number.isFinite(video.duration) ||
-                    video.duration - video.currentTime > 0.9
-                  )
-                    return;
+          {HERO_SLIDES.map((slide, slideIndex) => (
+            <div
+              className={`hero-background ${
+                slideIndex === currentSlide ? "is-active" : ""
+              }`.trim()}
+              key={slideIndex}
+              aria-hidden={slideIndex !== currentSlide}
+              style={{
+                backgroundImage: slide.image
+                  ? `url(${slide.image})`
+                  : undefined,
+              }}
+            >
+              {slide.video && (
+                <video
+                  key={`${slide.video}-${slideIndex === currentSlide ? "active" : "idle"}`}
+                  className="hero-video"
+                  src={slide.video}
+                  autoPlay={slideIndex === currentSlide}
+                  muted
+                  playsInline
+                  onPlay={(event) => {
+                    event.currentTarget.dataset.advanceStarted = "false";
+                  }}
+                  onTimeUpdate={(event) => {
+                    if (slideIndex !== currentSlide) return;
 
-                  video.dataset.advanceStarted = "true";
-                  video.pause();
-                  moveHeroSlide((prev) => (prev + 1) % HERO_SLIDES.length);
-                }}
-                onEnded={(event) => {
-                  const video = event.currentTarget;
-                  if (video.dataset.advanceStarted !== "true") {
+                    const video = event.currentTarget;
+                    if (
+                      video.dataset.advanceStarted === "true" ||
+                      !Number.isFinite(video.duration) ||
+                      video.duration - video.currentTime > 0.9
+                    )
+                      return;
+
                     video.dataset.advanceStarted = "true";
+                    video.pause();
                     moveHeroSlide((prev) => (prev + 1) % HERO_SLIDES.length);
-                  }
-                }}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  objectPosition: "center 25%",
-                  display: "block",
-                  transform: "scale(1.1)",
-                }}
-              />
-            )}
-          </div>
+                  }}
+                  onEnded={(event) => {
+                    if (slideIndex !== currentSlide) return;
+
+                    const video = event.currentTarget;
+                    if (video.dataset.advanceStarted !== "true") {
+                      video.dataset.advanceStarted = "true";
+                      moveHeroSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+                    }
+                  }}
+                />
+              )}
+            </div>
+          ))}
           <div
             className="hero-content"
             style={{
@@ -1372,6 +1392,7 @@ export default function RomAndLanding() {
               inset: 0,
               background: "rgba(0,0,0,0.05)",
               pointerEvents: "none",
+              zIndex: 3,
             }}
           />
           <div
@@ -1385,6 +1406,7 @@ export default function RomAndLanding() {
             }}
           >
             <div
+              key={currentSlide}
               className="hero-copy"
               style={{
                 maxWidth: 560,
@@ -1480,9 +1502,7 @@ export default function RomAndLanding() {
                         (prev - 1 + HERO_SLIDES.length) % HERO_SLIDES.length,
                     );
                   } else {
-                    moveHeroSlide(
-                      (prev) => (prev + 1) % HERO_SLIDES.length,
-                    );
+                    moveHeroSlide((prev) => (prev + 1) % HERO_SLIDES.length);
                   }
                 }}
                 style={{
@@ -1746,10 +1766,10 @@ export default function RomAndLanding() {
                 }}
               >
                 <div
-                    className="dewy-shadow product-hover product-image-frame image-shalala"
-                    style={{
-                      zIndex: 1,
-                    }}
+                  className="dewy-shadow product-hover product-image-frame image-shalala"
+                  style={{
+                    zIndex: 1,
+                  }}
                 >
                   <img
                     src={img3}
@@ -1848,9 +1868,7 @@ export default function RomAndLanding() {
                 style={{ gridColumn: "7 / span 6", justifySelf: "end" }}
               >
                 <div style={{ marginTop: 140 }}>
-                  <div
-                    className="dewy-shadow product-hover product-image-frame image-shalala section3-contain"
-                  >
+                  <div className="dewy-shadow product-hover product-image-frame image-shalala section3-contain">
                     <img
                       src={img5}
                       alt="Romand cheek product"
