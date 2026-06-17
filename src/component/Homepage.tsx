@@ -363,6 +363,7 @@ const productLabelStyle: React.CSSProperties = {
 export default function RomAndLanding() {
   const [scrolled, setScrolled] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [hideHeroVideoSlide, setHideHeroVideoSlide] = useState(false);
   const [selectedProductIndex, setSelectedProductIndex] = useState<
     number | null
   >(null);
@@ -386,8 +387,34 @@ export default function RomAndLanding() {
   const section3Sparkles = useRef<TrailSparkle[]>([]);
   const lastSparkleTime = useRef(0);
 
+  const isHeroSlideVisible = (slideIndex: number) =>
+    !(hideHeroVideoSlide && HERO_SLIDES[slideIndex].video);
+
+  const findVisibleHeroSlide = (startIndex: number, direction: 1 | -1) => {
+    let slideIndex = (startIndex + HERO_SLIDES.length) % HERO_SLIDES.length;
+
+    for (let attempts = 0; attempts < HERO_SLIDES.length; attempts += 1) {
+      if (isHeroSlideVisible(slideIndex)) return slideIndex;
+      slideIndex =
+        (slideIndex + direction + HERO_SLIDES.length) % HERO_SLIDES.length;
+    }
+
+    return 0;
+  };
+
   const moveHeroSlide = (getNextSlide: (current: number) => number) => {
-    setCurrentSlide((current) => getNextSlide(current));
+    setCurrentSlide((current) => {
+      const requestedSlide = getNextSlide(current);
+      const normalizedSlide =
+        (requestedSlide + HERO_SLIDES.length) % HERO_SLIDES.length;
+      const direction: 1 | -1 =
+        normalizedSlide ===
+        (current - 1 + HERO_SLIDES.length) % HERO_SLIDES.length
+          ? -1
+          : 1;
+
+      return findVisibleHeroSlide(normalizedSlide, direction);
+    });
   };
 
   const addSection3TrailPoint = (event: React.PointerEvent<HTMLElement>) => {
@@ -480,6 +507,26 @@ export default function RomAndLanding() {
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 900px)");
+    const syncHeroVideoVisibility = () => {
+      setHideHeroVideoSlide(mediaQuery.matches);
+    };
+
+    syncHeroVideoVisibility();
+    mediaQuery.addEventListener("change", syncHeroVideoVisibility);
+
+    return () => {
+      mediaQuery.removeEventListener("change", syncHeroVideoVisibility);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!hideHeroVideoSlide || !HERO_SLIDES[currentSlide].video) return;
+
+    setCurrentSlide(findVisibleHeroSlide(currentSlide + 1, 1));
+  }, [currentSlide, hideHeroVideoSlide]);
 
   useEffect(() => {
     if (
@@ -1485,22 +1532,29 @@ export default function RomAndLanding() {
           {HERO_SLIDES.map((slide, slideIndex) => (
             <div
               className={`hero-background ${
-                slideIndex === currentSlide ? "is-active" : ""
+                slideIndex === currentSlide && isHeroSlideVisible(slideIndex)
+                  ? "is-active"
+                  : ""
               }`.trim()}
               key={slideIndex}
-              aria-hidden={slideIndex !== currentSlide}
+              aria-hidden={
+                slideIndex !== currentSlide || !isHeroSlideVisible(slideIndex)
+              }
               style={{
                 backgroundImage: slide.image
                   ? `url(${slide.image})`
                   : undefined,
               }}
             >
-              {slide.video && (
+              {slide.video && !hideHeroVideoSlide && (
                 <video
                   key={`${slide.video}-${slideIndex === currentSlide ? "active" : "idle"}`}
                   className="hero-video"
                   src={slide.video}
-                  autoPlay={slideIndex === currentSlide}
+                  autoPlay={
+                    slideIndex === currentSlide &&
+                    isHeroSlideVisible(slideIndex)
+                  }
                   muted
                   playsInline
                   onPlay={(event) => {
