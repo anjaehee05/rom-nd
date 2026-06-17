@@ -372,6 +372,9 @@ export default function RomAndLanding() {
   const [selectedFooterIndex, setSelectedFooterIndex] = useState<number | null>(
     null,
   );
+  const [selectedSocialImageIndex, setSelectedSocialImageIndex] = useState<
+    number | null
+  >(null);
   const [img2Hovered, setImg2Hovered] = useState(false);
   const [pairedProductsVisible, setPairedProductsVisible] = useState(false);
   const [thirdRowVisible, setThirdRowVisible] = useState(false);
@@ -464,6 +467,14 @@ export default function RomAndLanding() {
     socialGalleryAnimationFrame.current = requestAnimationFrame(animateScroll);
   };
 
+  const openSocialImage = (index: number) => {
+    if (socialGalleryAnimationFrame.current) {
+      cancelAnimationFrame(socialGalleryAnimationFrame.current);
+    }
+
+    setSelectedSocialImageIndex(index % SOCIAL_IMGS.length);
+  };
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", onScroll);
@@ -474,7 +485,8 @@ export default function RomAndLanding() {
     if (
       selectedProductIndex === null &&
       selectedReviewIndex === null &&
-      selectedFooterIndex === null
+      selectedFooterIndex === null &&
+      selectedSocialImageIndex === null
     )
       return;
 
@@ -483,6 +495,7 @@ export default function RomAndLanding() {
         setSelectedProductIndex(null);
         setSelectedReviewIndex(null);
         setSelectedFooterIndex(null);
+        setSelectedSocialImageIndex(null);
       }
     };
     const previousOverflow = document.body.style.overflow;
@@ -493,7 +506,12 @@ export default function RomAndLanding() {
       document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", closeOnEscape);
     };
-  }, [selectedProductIndex, selectedReviewIndex, selectedFooterIndex]);
+  }, [
+    selectedProductIndex,
+    selectedReviewIndex,
+    selectedFooterIndex,
+    selectedSocialImageIndex,
+  ]);
   useEffect(() => {
     if (HERO_SLIDES[currentSlide].video) return;
 
@@ -534,12 +552,14 @@ export default function RomAndLanding() {
   }, []);
 
   useEffect(() => {
+    if (selectedSocialImageIndex !== null) return;
+
     const timer = setInterval(() => {
       scrollSocialGallery(1);
     }, 2000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [selectedSocialImageIndex]);
 
   useEffect(() => {
     const section = section3Ref.current;
@@ -658,6 +678,8 @@ export default function RomAndLanding() {
 
   const closeFooterModal = () => setSelectedFooterIndex(null);
 
+  const closeSocialImage = () => setSelectedSocialImageIndex(null);
+
   return (
     <div
       className="romand-landing"
@@ -714,6 +736,37 @@ export default function RomAndLanding() {
         @keyframes hero-copy-rise {
           from { opacity: 0; transform: translateX(-30px) translateY(18px); }
           to { opacity: 1; transform: translateX(-30px) translateY(0); }
+        }
+        .social-image-button {
+          width: 100%;
+          height: 100%;
+          padding: 0;
+          border: none;
+          background: transparent;
+          cursor: zoom-in;
+        }
+        .social-image-button img {
+          transition:
+            transform 0.45s cubic-bezier(.22, 1, .36, 1),
+            filter 0.45s ease;
+        }
+        .social-image-button:hover img {
+          transform: scale(1.035);
+          filter: saturate(1.06);
+        }
+        .social-lightbox {
+          animation: social-lightbox-in 0.28s ease-out both;
+        }
+        .social-lightbox-image {
+          animation: social-lightbox-image-in 0.42s cubic-bezier(.22, 1, .36, 1) both;
+        }
+        @keyframes social-lightbox-in {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        @keyframes social-lightbox-image-in {
+          from { opacity: 0; transform: translateY(16px) scale(0.96); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
         }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
@@ -1317,6 +1370,102 @@ export default function RomAndLanding() {
                 <li key={detail}>{detail}</li>
               ))}
             </ul>
+          </div>
+        </div>
+      )}
+
+      {selectedSocialImageIndex !== null && (
+        <div
+          className="social-lightbox"
+          role="presentation"
+          onClick={closeSocialImage}
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 110,
+            display: "grid",
+            placeItems: "center",
+            padding: 24,
+            background: "rgba(48, 19, 10, 0.46)",
+            backdropFilter: "blur(10px)",
+          }}
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label={`rom&nd look ${selectedSocialImageIndex + 1}`}
+            onClick={(event) => event.stopPropagation()}
+            style={{
+              position: "relative",
+              width: "fit-content",
+              maxWidth: "calc(100vw - 48px)",
+              maxHeight: "calc(100vh - 48px)",
+              display: "grid",
+              placeItems: "center",
+            }}
+          >
+            <button
+              type="button"
+              aria-label="Close enlarged image"
+              onClick={closeSocialImage}
+              style={{
+                position: "absolute",
+                top: 0,
+                right: -42,
+                width: 32,
+                height: 32,
+                border: "none",
+                borderRadius: "50%",
+                background: "rgba(255,255,255,0.82)",
+                boxShadow: "0 6px 18px rgba(0,0,0,0.16)",
+                color: "#30130a",
+                cursor: "pointer",
+                zIndex: 2,
+                display: "grid",
+                placeItems: "center",
+              }}
+            >
+              <span
+                aria-hidden="true"
+                style={{
+                  position: "relative",
+                  width: 17,
+                  height: 17,
+                  display: "block",
+                }}
+              >
+                {[45, -45].map((rotation) => (
+                  <span
+                    key={rotation}
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      width: 22,
+                      height: 2,
+                      borderRadius: 999,
+                      background: "#30130a",
+                      transform: `translate(-50%, -50%) rotate(${rotation}deg)`,
+                      transformOrigin: "center",
+                    }}
+                  />
+                ))}
+              </span>
+            </button>
+            <img
+              className="social-lightbox-image"
+              src={SOCIAL_IMGS[selectedSocialImageIndex]}
+              alt={`rom&nd look ${selectedSocialImageIndex + 1}`}
+              style={{
+                width: "auto",
+                maxWidth: "min(640px, calc(100vw - 48px))",
+                maxHeight: "calc(100vh - 48px)",
+                objectFit: "contain",
+                borderRadius: 12,
+                background: "transparent",
+                boxShadow: "0 28px 90px rgba(48,19,10,0.28)",
+              }}
+            />
           </div>
         </div>
       )}
@@ -2147,17 +2296,26 @@ export default function RomAndLanding() {
                     borderRadius: 16,
                   }}
                 >
-                  <img
-                    src={src}
-                    alt={`rom&nd look ${(i % SOCIAL_IMGS.length) + 1}`}
-                    className="dewy-shadow"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "contain",
-                      display: "block",
-                    }}
-                  />
+                  <button
+                    type="button"
+                    className="social-image-button"
+                    aria-label={`Enlarge rom&nd look ${
+                      (i % SOCIAL_IMGS.length) + 1
+                    }`}
+                    onClick={() => openSocialImage(i)}
+                  >
+                    <img
+                      src={src}
+                      alt={`rom&nd look ${(i % SOCIAL_IMGS.length) + 1}`}
+                      className="dewy-shadow"
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "contain",
+                        display: "block",
+                      }}
+                    />
+                  </button>
                 </div>
               ))}
             </div>
